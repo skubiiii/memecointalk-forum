@@ -7,6 +7,13 @@ import Pagination from "@/components/Pagination";
 import { format } from "date-fns";
 import UserActions from "./UserActions";
 
+function maskEmail(email: string): string {
+  const [local, domain] = email.split("@");
+  if (!domain) return "***";
+  const masked = local.length <= 2 ? "*".repeat(local.length) : local[0] + "*".repeat(local.length - 2) + local[local.length - 1];
+  return `${masked}@${domain}`;
+}
+
 const USERS_PER_PAGE = 20;
 
 export default async function UsersManagementPage({
@@ -120,7 +127,7 @@ export default async function UsersManagementPage({
                   {user.username}
                 </Link>
               </td>
-              <td className="small">{user.email}</td>
+              <td className="small">{maskEmail(user.email)}</td>
               <td className="small">{user.role}</td>
               <td className="tc">{user.postCount}</td>
               <td className="tc">{user.meritScore}</td>

@@ -5,6 +5,13 @@ import { auth } from "@/lib/auth";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { format } from "date-fns";
 
+function maskEmail(email: string): string {
+  const [local, domain] = email.split("@");
+  if (!domain) return "***";
+  const masked = local.length <= 2 ? "*".repeat(local.length) : local[0] + "*".repeat(local.length - 2) + local[local.length - 1];
+  return `${masked}@${domain}`;
+}
+
 export default async function AdminPage() {
   const session = await auth();
 
@@ -87,7 +94,7 @@ export default async function AdminPage() {
                   {user.username}
                 </Link>
               </td>
-              <td className="small">{user.email}</td>
+              <td className="small">{maskEmail(user.email)}</td>
               <td className="small">{user.role}</td>
               <td className="tc small">
                 {user.isBanned ? (

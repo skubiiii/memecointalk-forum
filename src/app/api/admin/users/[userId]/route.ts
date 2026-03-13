@@ -58,17 +58,10 @@ export async function PUT(
     return NextResponse.json({ error: "No fields to update" }, { status: 400 });
   }
 
-  const updatedUser = await prisma.user.update({
+  await prisma.user.update({
     where: { id: userId },
     data,
-    select: {
-      id: true,
-      username: true,
-      email: true,
-      role: true,
-      isBanned: true,
-    },
   });
 
-  return NextResponse.json(updatedUser);
+  return NextResponse.json({ success: true });
 }
