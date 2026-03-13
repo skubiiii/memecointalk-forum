@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import LogoutButton from "./LogoutButton";
 
 export default async function Header() {
   const session = await auth();
@@ -30,9 +31,7 @@ export default async function Header() {
           )}
         </div>
         <div>
-          {user && (
-            <Link href="/api/auth/signout">Logout</Link>
-          )}
+          {user && <LogoutButton />}
         </div>
       </div>
 
