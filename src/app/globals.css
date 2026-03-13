@@ -562,8 +562,8 @@ img {
 .bbcode-quote {
   background: #F9F9F9;
   border: 1px solid #D0D0D0;
-  padding: 6px 10px;
-  margin: 6px 0;
+  padding: 0;
+  margin: 8px 0;
   font-size: 11px;
 }
 
@@ -571,7 +571,14 @@ img {
   font-weight: bold;
   font-size: 10px;
   color: #666;
-  margin-bottom: 3px;
+  padding: 4px 8px;
+  border-bottom: 1px solid #D0D0D0;
+  background: #EFEFEF;
+}
+
+.bbcode-quote-body {
+  padding: 6px 10px;
+  line-height: 1.4;
 }
 
 .bbcode-code {

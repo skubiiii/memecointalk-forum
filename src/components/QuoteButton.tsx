@@ -11,7 +11,7 @@ export default function QuoteButton({
   postContent,
 }: QuoteButtonProps) {
   const handleQuote = () => {
-    const quoteText = `[quote=${postAuthor}]${postContent}[/quote]`;
+    const quoteText = `[quote=${postAuthor}]\n${postContent}\n[/quote]\n\n`;
 
     // Dispatch custom event for the BBCodeEditor to pick up
     window.dispatchEvent(
@@ -28,7 +28,7 @@ export default function QuoteButton({
   };
 
   return (
-    <button type="button" className="quote-btn" onClick={handleQuote}>
+    <button type="button" className="sm-btn" onClick={handleQuote}>
       Quote
     </button>
   );

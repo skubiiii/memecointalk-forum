@@ -94,12 +94,12 @@ export function renderBBCode(input: string): string {
   html = html.replace(
     /\[quote=([^\]]+)\]([\s\S]*?)\[\/quote\]/gi,
     (_match, author: string, content: string) => {
-      return `<div class="bbcode-quote"><cite>${author} wrote:</cite>${content}</div>`;
+      return `<div class="bbcode-quote"><div class="bbcode-quote-header">Quote from: ${author}</div><div class="bbcode-quote-body">${content}</div></div>`;
     }
   );
   html = html.replace(
     /\[quote\]([\s\S]*?)\[\/quote\]/gi,
-    '<div class="bbcode-quote">$1</div>'
+    '<div class="bbcode-quote"><div class="bbcode-quote-header">Quote</div><div class="bbcode-quote-body">$1</div></div>'
   );
 
   // --- [spoiler] ---
