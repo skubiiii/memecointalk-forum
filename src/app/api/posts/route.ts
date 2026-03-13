@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth";
 import { z } from "zod";
 
 const createPostSchema = z.object({
-  content: z.string().min(1),
+  content: z.string().min(1).max(50000, "Post content is too long"),
   threadId: z.string().min(1),
 });
 

@@ -4,17 +4,30 @@ import { auth } from "@/lib/auth";
 import { z } from "zod";
 
 const updateProfileSchema = z.object({
-  avatar: z.string().url().optional().or(z.literal("")),
+  avatar: z.string().url().refine(
+    (url) => /^https?:\/\//i.test(url),
+    "Avatar URL must use http or https"
+  ).optional().or(z.literal("")),
   signature: z.string().max(500).optional().or(z.literal("")),
   email: z.string().email().optional().or(z.literal("")),
 });
 
 export async function GET(req: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const { searchParams } = new URL(req.url);
   const userId = searchParams.get("userId");
 
   if (!userId) {
     return NextResponse.json({ error: "userId required" }, { status: 400 });
+  }
+
+  // Only allow users to fetch their own profile data (contains email)
+  if (userId !== session.user.id) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   const user = await prisma.user.findUnique({

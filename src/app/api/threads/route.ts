@@ -6,7 +6,7 @@ import slugify from "slugify";
 
 const createThreadSchema = z.object({
   title: z.string().min(3).max(200),
-  content: z.string().min(1),
+  content: z.string().min(1).max(50000, "Post content is too long"),
   boardSlug: z.string().min(1),
 });
 

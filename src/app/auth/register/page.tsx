@@ -20,7 +20,8 @@ export default function RegisterPage() {
     if (username.length < 3) { setError("Username must be at least 3 characters."); return; }
     if (username.length > 20) { setError("Username must be 20 characters or fewer."); return; }
     if (!/^[a-zA-Z0-9_]+$/.test(username)) { setError("Username: letters, numbers, underscores only."); return; }
-    if (password.length < 6) { setError("Password must be at least 6 characters."); return; }
+    if (password.length < 8) { setError("Password must be at least 8 characters."); return; }
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) { setError("Password must contain uppercase, lowercase, and a number."); return; }
     if (password !== confirmPassword) { setError("Passwords do not match."); return; }
     setLoading(true);
     try {
@@ -61,7 +62,7 @@ export default function RegisterPage() {
                 <td className="label">Password:</td>
                 <td>
                   <input className="forum-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="new-password" style={{ width: 250 }} />
-                  <div className="helper">Minimum 6 characters.</div>
+                  <div className="helper">Minimum 8 characters. Must include uppercase, lowercase, and a number.</div>
                 </td>
               </tr>
               <tr>

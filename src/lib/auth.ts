@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import prisma from "./prisma";
+import { rateLimit } from "./rate-limit";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -11,11 +12,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials, request) {
         if (!credentials?.username || !credentials?.password) return null;
 
+        // Rate limit: 10 login attempts per username per 15 minutes
+        const username = credentials.username as string;
+        const { allowed } = rateLimit(`login:${username}`, 10, 15 * 60 * 1000);
+        if (!allowed) return null;
+
         const user = await prisma.user.findUnique({
-          where: { username: credentials.username as string },
+          where: { username },
         });
 
         if (!user || user.isBanned) return null;

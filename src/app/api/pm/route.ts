@@ -4,9 +4,9 @@ import { auth } from "@/lib/auth";
 import { z } from "zod";
 
 const createMessageSchema = z.object({
-  recipientUsername: z.string().min(1),
+  recipientUsername: z.string().min(1).max(20),
   subject: z.string().min(1).max(200),
-  content: z.string().min(1),
+  content: z.string().min(1).max(10000, "Message is too long"),
 });
 
 export async function POST(req: NextRequest) {
