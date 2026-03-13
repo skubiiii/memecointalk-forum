@@ -22,7 +22,7 @@ export default function LoginPage() {
       if (result?.error) {
         setError("Login failed. Check your username and password.");
       } else {
-        router.push("/");
+        window.location.href = "/";
       }
     } catch {
       setError("An unexpected error occurred.");
