@@ -1,0 +1,152 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  MEMBER
+  MODERATOR
+  GLOBAL_MODERATOR
+  ADMIN
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  avatar       String?
+  signature    String?
+  role         Role     @default(MEMBER)
+  postCount    Int      @default(0)
+  meritScore   Int      @default(0)
+  isBanned     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  threads          Thread[]
+  posts            Post[]
+  meritsSent       Merit[]          @relation("MeritSender")
+  meritsReceived   Merit[]          @relation("MeritReceiver")
+  messagesSent     PrivateMessage[] @relation("MessageSender")
+  messagesReceived PrivateMessage[] @relation("MessageReceiver")
+  moderatedBoards  Board[]          @relation("BoardModerators")
+}
+
+model Category {
+  id        String  @id @default(cuid())
+  name      String
+  slug      String  @unique
+  sortOrder Int     @default(0)
+  boards    Board[]
+}
+
+model Board {
+  id              String    @id @default(cuid())
+  name            String
+  slug            String    @unique
+  description     String?
+  categoryId      String
+  parentId        String?
+  threadCount     Int       @default(0)
+  postCount       Int       @default(0)
+  lastPostAt      DateTime?
+  lastPostBy      String?
+  lastThreadTitle String?
+  lastThreadId    String?
+  sortOrder       Int       @default(0)
+
+  category   Category @relation(fields: [categoryId], references: [id])
+  parent     Board?   @relation("SubBoards", fields: [parentId], references: [id])
+  children   Board[]  @relation("SubBoards")
+  threads    Thread[]
+  moderators User[]   @relation("BoardModerators")
+
+  @@index([categoryId])
+  @@index([parentId])
+}
+
+model Thread {
+  id         String   @id @default(cuid())
+  title      String
+  slug       String
+  boardId    String
+  authorId   String
+  isPinned   Boolean  @default(false)
+  isLocked   Boolean  @default(false)
+  viewCount  Int      @default(0)
+  replyCount Int      @default(0)
+  lastPostAt DateTime @default(now())
+  lastPostBy String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  board Board  @relation(fields: [boardId], references: [id])
+  author User  @relation(fields: [authorId], references: [id])
+  posts  Post[]
+
+  @@index([boardId, isPinned, lastPostAt])
+  @@index([authorId])
+}
+
+model Post {
+  id          String    @id @default(cuid())
+  content     String
+  threadId    String
+  authorId    String
+  isFirstPost Boolean   @default(false)
+  editedAt    DateTime?
+  createdAt   DateTime  @default(now())
+
+  thread Thread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  author User   @relation(fields: [authorId], references: [id])
+  merits Merit[]
+
+  @@index([threadId, createdAt])
+  @@index([authorId])
+}
+
+model Merit {
+  id         String   @id @default(cuid())
+  amount     Int      @default(1)
+  postId     String
+  senderId   String
+  receiverId String
+  createdAt  DateTime @default(now())
+
+  post     Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  sender   User @relation("MeritSender", fields: [senderId], references: [id])
+  receiver User @relation("MeritReceiver", fields: [receiverId], references: [id])
+
+  @@unique([senderId, postId])
+  @@index([receiverId])
+}
+
+model PrivateMessage {
+  id         String   @id @default(cuid())
+  subject    String
+  content    String
+  senderId   String
+  receiverId String
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  sender   User @relation("MessageSender", fields: [senderId], references: [id])
+  receiver User @relation("MessageReceiver", fields: [receiverId], references: [id])
+
+  @@index([receiverId, isRead])
+  @@index([senderId])
+}
+
+model ForumStats {
+  id           String @id @default("singleton")
+  totalPosts   Int    @default(0)
+  totalThreads Int    @default(0)
+  totalMembers Int    @default(0)
+  newestMember String?
+  onlineToday  Int    @default(0)
+}

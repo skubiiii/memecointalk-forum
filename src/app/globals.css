@@ -1,26 +1,790 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Restore sensible defaults that Tailwind preflight strips */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  color: #000;
+  background: #E4E4E4;
+  line-height: 1.2;
+}
+
+a {
+  color: #0033CC;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #660099;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  border: 0;
+}
+
+/* ============================================
+   FORUM WRAPPER
+   ============================================ */
+.forum-wrapper {
+  width: 1060px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* ============================================
+   TOP HEADER AREA
+   ============================================ */
+.forum-top-bar {
+  background: #5F8EB8;
+  border-bottom: 1px solid #4A7A9B;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.forum-top-bar a {
+  color: #fff;
+  font-size: 11px;
+}
+
+.forum-top-bar a:visited {
+  color: #fff;
+}
+
+.forum-logo-area {
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.forum-logo {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+  letter-spacing: -1px;
+}
+
+.forum-logo:hover {
+  text-decoration: none;
+}
+
+.forum-logo:visited {
+  color: #333;
+}
+
+.forum-logo .logo-sub {
+  font-size: 11px;
+  font-weight: normal;
+  color: #888;
+  display: block;
+  letter-spacing: 0;
+  font-family: Verdana, Arial, sans-serif;
+}
+
+.forum-nav {
+  background: #8CAFC4;
+  border: 1px solid #7A9EB8;
+  padding: 3px 6px;
+  display: flex;
+  gap: 0;
+  font-size: 11px;
+}
+
+.forum-nav a {
+  color: #fff;
+  padding: 2px 8px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.forum-nav a:visited {
+  color: #fff;
+}
+
+.forum-nav a:hover {
+  text-decoration: underline;
+}
+
+.forum-nav .sep {
+  color: #a0c4d8;
+  padding: 2px 2px;
+}
+
+/* ============================================
+   CATEGORY HEADERS
+   ============================================ */
+.cat-header {
+  background: #C4D3F6;
+  padding: 5px 8px;
+  font-size: 14px;
+  font-weight: bold;
+  border: 1px solid #A0A0A0;
+  border-bottom: none;
+  color: #000;
+}
+
+.cat-header a {
+  color: #000;
+  text-decoration: none;
+}
+
+.cat-header a:visited {
+  color: #000;
+}
+
+.cat-header a:hover {
+  text-decoration: underline;
+}
+
+/* ============================================
+   FORUM TABLES
+   ============================================ */
+.ftable {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #A0A0A0;
+  background: #fff;
+  margin-bottom: 6px;
+}
+
+.ftable th {
+  background: #D5DAE6;
+  padding: 4px 8px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: bold;
+  color: #000;
+  border-bottom: 1px solid #A0A0A0;
+}
+
+.ftable th.tc {
+  text-align: center;
+}
+
+.ftable td {
+  padding: 5px 8px;
+  font-size: 12px;
+  border-bottom: 1px solid #D0D0D0;
+  vertical-align: top;
+  color: #000;
+}
+
+.ftable tr.row1 td {
+  background: #FFFFFF;
+}
+
+.ftable tr.row2 td {
+  background: #F6F6F6;
+}
+
+.ftable td.tc {
+  text-align: center;
+}
+
+.ftable td.small {
+  font-size: 11px;
+}
+
+.ftable td.icon-cell {
+  width: 32px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 5px 4px;
+}
+
+/* ============================================
+   BOARD INDEX SPECIFIC
+   ============================================ */
+.board-name {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.board-name a {
+  color: #0033CC;
+}
+
+.board-name a:visited {
+  color: #0033CC;
+}
+
+.board-desc {
+  font-size: 11px;
+  color: #666;
+  margin-top: 1px;
+}
+
+.board-children {
+  font-size: 10px;
+  color: #888;
+  margin-top: 3px;
+}
+
+.board-children a {
+  font-size: 10px;
+}
+
+.lastpost-info {
+  font-size: 11px;
+  color: #000;
+}
+
+.lastpost-info .lp-date {
+  color: #666;
+}
+
+.lastpost-info a {
+  font-size: 11px;
+}
+
+/* ============================================
+   POST LAYOUT (TABLE BASED)
+   ============================================ */
+.post-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #A0A0A0;
+  margin-bottom: -1px;
+  background: #fff;
+}
+
+.post-table td {
+  border: 0;
+  padding: 0;
+}
+
+.post-user-cell {
+  width: 170px;
+  vertical-align: top;
+  padding: 6px 8px 8px;
+  border-right: 1px solid #D0D0D0;
+  background: #F0F0F0;
+  font-size: 11px;
+}
+
+.post-user-cell .pu-name {
+  font-weight: bold;
+  font-size: 12px;
+  margin-bottom: 3px;
+}
+
+.post-user-cell .pu-name a {
+  color: #0033CC;
+}
+
+.post-user-cell .pu-name a:visited {
+  color: #0033CC;
+}
+
+.post-user-cell .pu-rank {
+  font-size: 10px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.post-user-cell .pu-avatar {
+  width: 80px;
+  height: 80px;
+  margin: 4px 0 6px;
+  background: #ddd;
+  overflow: hidden;
+  display: block;
+}
+
+.post-user-cell .pu-avatar img {
+  width: 80px;
+  height: 80px;
+  display: block;
+}
+
+.post-user-cell .pu-info {
+  font-size: 10px;
+  color: #444;
+  line-height: 1.4;
+}
+
+.post-user-cell .pu-info b {
+  color: #000;
+}
+
+.post-content-cell {
+  vertical-align: top;
+}
+
+.post-head {
+  background: #D5DAE6;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: #666;
+  border-bottom: 1px solid #D0D0D0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-head a {
+  font-size: 11px;
+}
+
+.post-body {
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  min-height: 60px;
+}
+
+.post-sig {
+  padding: 6px 10px;
+  border-top: 1px dashed #ccc;
+  font-size: 11px;
+  color: #888;
+  margin-top: 8px;
+}
+
+.post-foot {
+  padding: 3px 8px;
+  border-top: 1px solid #D0D0D0;
+  background: #F5F5F5;
+  font-size: 11px;
+  text-align: right;
+}
+
+.post-foot a,
+.post-foot button {
+  font-size: 11px;
+  margin-left: 6px;
+}
+
+/* ============================================
+   SMALL BUTTONS (QUOTE, MERIT, ETC)
+   ============================================ */
+.sm-btn {
+  display: inline-block;
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 11px;
+  padding: 1px 8px;
+  background: #E8E8E8;
+  border: 1px solid #A0A0A0;
+  color: #000;
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.sm-btn:hover {
+  background: #D0D0D0;
+  text-decoration: none;
+}
+
+.sm-btn:visited {
+  color: #000;
+}
+
+/* ============================================
+   BREADCRUMBS
+   ============================================ */
+.breadcrumbs {
+  padding: 4px 0;
+  font-size: 12px;
+  color: #000;
+}
+
+.breadcrumbs a {
+  color: #0033CC;
+  font-size: 12px;
+}
+
+.breadcrumbs .sep {
+  margin: 0 3px;
+  color: #888;
+  font-size: 10px;
+}
+
+/* ============================================
+   PAGINATION
+   ============================================ */
+.pages {
+  font-size: 11px;
+  padding: 4px 0;
+  color: #666;
+}
+
+.pages b {
+  color: #000;
+}
+
+.pages a {
+  font-size: 11px;
+  padding: 1px 4px;
+  text-decoration: none;
+}
+
+.pages a:hover {
+  text-decoration: underline;
+}
+
+.pages .current {
+  font-weight: bold;
+  padding: 1px 4px;
+  color: #000;
+}
+
+/* ============================================
+   STATS BAR
+   ============================================ */
+.forum-stats-box {
+  background: #fff;
+  border: 1px solid #A0A0A0;
+  padding: 8px 10px;
+  font-size: 11px;
+  margin-top: 4px;
+  line-height: 1.6;
+}
+
+.forum-stats-box b {
+  color: #000;
+}
+
+/* ============================================
+   FORMS
+   ============================================ */
+.forum-input {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 12px;
+  padding: 3px 4px;
+  border: 1px solid #A0A0A0;
+  background: #fff;
+  color: #000;
+  border-radius: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.forum-input:focus {
+  outline: 1px solid #5F8EB8;
+}
+
+.forum-textarea {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 12px;
+  padding: 4px 6px;
+  border: 1px solid #A0A0A0;
+  background: #fff;
+  color: #000;
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  border-radius: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.forum-textarea:focus {
+  outline: 1px solid #5F8EB8;
+}
+
+.forum-btn {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 12px;
+  padding: 3px 14px;
+  background: #E8E8E8;
+  color: #000;
+  border: 1px solid #A0A0A0;
+  cursor: pointer;
+  border-radius: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.forum-btn:hover {
+  background: #D0D0D0;
+}
+
+/* ============================================
+   BBCODE TOOLBAR
+   ============================================ */
+.bbcode-toolbar {
+  display: flex;
+  gap: 1px;
+  padding: 3px;
+  background: #D5DAE6;
+  border: 1px solid #A0A0A0;
+  border-bottom: none;
+  flex-wrap: wrap;
+}
+
+.bbcode-toolbar button {
+  padding: 2px 6px;
+  font-size: 10px;
+  font-family: Verdana, Arial, sans-serif;
+  background: #E8E8E8;
+  border: 1px solid #A0A0A0;
+  cursor: pointer;
+  color: #000;
+  font-weight: bold;
+}
+
+.bbcode-toolbar button:hover {
+  background: #D0D0D0;
+}
+
+/* ============================================
+   BBCODE RENDERED CONTENT
+   ============================================ */
+.bbcode-quote {
+  background: #F9F9F9;
+  border: 1px solid #D0D0D0;
+  padding: 6px 10px;
+  margin: 6px 0;
+  font-size: 11px;
+}
+
+.bbcode-quote-header {
+  font-weight: bold;
+  font-size: 10px;
+  color: #666;
+  margin-bottom: 3px;
+}
+
+.bbcode-code {
+  background: #F4F4F4;
+  border: 1px solid #D0D0D0;
+  padding: 6px 10px;
+  margin: 6px 0;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 11px;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+.bbcode-spoiler {
+  background: #333;
+  color: #333;
+  padding: 1px 3px;
+  cursor: pointer;
+}
+
+.bbcode-spoiler:hover,
+.bbcode-spoiler.revealed {
+  color: #fff;
+}
+
+/* ============================================
+   TITLE BAR (thread/board header bar)
+   ============================================ */
+.title-bar {
+  background: #C4D3F6;
+  padding: 4px 8px;
+  font-size: 13px;
+  font-weight: bold;
+  border: 1px solid #A0A0A0;
+  border-bottom: none;
+  color: #000;
+}
+
+.title-bar a {
+  color: #000;
+}
+
+/* ============================================
+   SECTION HEADER (smaller than cat-header)
+   ============================================ */
+.section-header {
+  background: #D5DAE6;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  border: 1px solid #A0A0A0;
+  border-bottom: none;
+  color: #000;
+}
+
+/* ============================================
+   CONTENT BOX (generic white content area)
+   ============================================ */
+.content-box {
+  background: #fff;
+  border: 1px solid #A0A0A0;
+  padding: 10px;
+  font-size: 12px;
+}
+
+/* ============================================
+   FORM TABLE (login, register, etc)
+   ============================================ */
+.form-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.form-table td {
+  padding: 4px 6px;
+  font-size: 12px;
+  vertical-align: top;
+}
+
+.form-table td.label {
+  font-weight: bold;
+  width: 140px;
+  white-space: nowrap;
+  padding-right: 10px;
+  color: #000;
+}
+
+.form-table td .helper {
+  font-size: 10px;
+  color: #888;
+  margin-top: 1px;
+}
+
+/* ============================================
+   ERROR / NOTICE BOXES
+   ============================================ */
+.error-box {
+  background: #FEE;
+  border: 1px solid #C00;
+  color: #C00;
+  padding: 4px 8px;
+  margin-bottom: 8px;
+  font-size: 11px;
+}
+
+.notice-box {
+  background: #EFF;
+  border: 1px solid #5F8EB8;
+  color: #333;
+  padding: 4px 8px;
+  margin-bottom: 8px;
+  font-size: 11px;
+}
+
+/* ============================================
+   MERIT BADGE
+   ============================================ */
+.merit-badge {
+  display: inline;
+  font-size: 10px;
+  color: #090;
+  font-weight: bold;
+}
+
+/* ============================================
+   USER RANK COLORS
+   ============================================ */
+.rank-newbie { color: #888; }
+.rank-jr { color: #666; }
+.rank-member { color: #333; }
+.rank-full { color: #060; }
+.rank-sr { color: #009; }
+.rank-hero { color: #909; }
+.rank-legendary { color: #C90; font-weight: bold; }
+.rank-admin { color: #C00; font-weight: bold; }
+.rank-mod { color: #060; font-weight: bold; }
+
+/* ============================================
+   BOARD STATUS ICONS (text-based 16x16 style)
+   ============================================ */
+.board-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  text-align: center;
+  line-height: 16px;
+  font-size: 12px;
+}
+
+.bi-on { color: #FC0; }
+.bi-off { color: #999; }
+.bi-locked { color: #C00; }
+.bi-sticky { color: #090; }
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.forum-footer {
+  padding: 8px 0;
+  font-size: 10px;
+  color: #888;
+  text-align: center;
+  border-top: 1px solid #C0C0C0;
+  margin-top: 8px;
+  line-height: 1.6;
+}
+
+.forum-footer a {
+  color: #888;
+  font-size: 10px;
+}
+
+/* ============================================
+   THREAD LIST ICONS
+   ============================================ */
+.topic-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.topic-icon.pinned { color: #090; }
+.topic-icon.locked { color: #C00; }
+.topic-icon.normal { color: #999; }
+
+/* ============================================
+   MISC
+   ============================================ */
+.muted {
+  color: #888;
+}
+
+.small {
+  font-size: 11px;
+}
+
+.smaller {
+  font-size: 10px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.unread-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #FC0;
+  margin-right: 3px;
+}
+
+hr.post-sep {
+  border: 0;
+  border-top: 1px solid #D0D0D0;
+  margin: 0;
 }
