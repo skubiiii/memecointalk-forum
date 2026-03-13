@@ -1,13 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
 export default function LoginPage() {
-  const router = useRouter();
+  return (
+    <Suspense fallback={<div style={{ padding: 20 }}>Loading...</div>}>
+      <LoginForm />
+    </Suspense>
+  );
+}
+
+function LoginForm() {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -22,7 +31,7 @@ export default function LoginPage() {
       if (result?.error) {
         setError("Login failed. Check your username and password.");
       } else {
-        window.location.href = "/";
+        window.location.href = callbackUrl;
       }
     } catch {
       setError("An unexpected error occurred.");
