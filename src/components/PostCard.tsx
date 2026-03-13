@@ -64,8 +64,8 @@ export default function PostCard({ post, threadId }: PostProps) {
   const renderedContent = sanitizeHtml(renderBBCode(post.content));
 
   const handleQuote = () => {
-    const quoteText = `[quote=${author.username}]${post.content}[/quote]\n`;
-    window.dispatchEvent(new CustomEvent("bbcode-insert-quote", { detail: quoteText }));
+    const quoteText = `[quote=${author.username}]\n${post.content}\n[/quote]\n\n`;
+    window.dispatchEvent(new CustomEvent("bbcode-insert-quote", { detail: { text: quoteText } }));
     document.getElementById("reply-form")?.scrollIntoView({ behavior: "smooth" });
   };
 
