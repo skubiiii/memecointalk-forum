@@ -54,8 +54,12 @@ export default async function Header() {
             <Link href={`/profile/${user.id}`}>Profile</Link>
             <span className="sep">|</span>
             <Link href="/pm">My Messages{unreadCount > 0 ? ` (${unreadCount})` : ""}</Link>
-            <span className="sep">|</span>
-            <Link href="/admin">Admin</Link>
+            {((user as any).role === "ADMIN" || (user as any).role === "GLOBAL_MODERATOR") && (
+              <>
+                <span className="sep">|</span>
+                <Link href="/admin">Admin</Link>
+              </>
+            )}
           </>
         ) : (
           <>
